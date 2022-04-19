@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Image, TouchableHighlight } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Swipeable from "react-native-gesture-handler/Swipeable";
+// import Swipeable from "react-native-gesture-handler/Swipeable";
 
 import colors from "../../config/colors";
 import AppText from "../AppText";
@@ -16,31 +16,31 @@ const ListItem = ({
   showChevrons,
 }) => {
   return (
-    <Swipeable renderRightActions={renderRightActions}>
-      <TouchableHighlight underLayColor={colors.light} onPress={onPress}>
-        <View style={styles.container}>
-          {IconComponent}
-          {image && <Image style={styles.image} source={image} />}
-          <View style={styles.detailsContainer}>
-            <AppText style={styles.title} numberOfLines={1}>
-              {title}
+    // <Swipeable renderRightActions={renderRightActions}>
+    <TouchableHighlight underLayColor={colors.light} onPress={onPress}>
+      <View style={styles.container}>
+        {IconComponent}
+        {image && <Image style={styles.image} source={image} />}
+        <View style={styles.detailsContainer}>
+          <AppText style={styles.title} numberOfLines={1}>
+            {title}
+          </AppText>
+          {subTitle && (
+            <AppText style={styles.subTitle} numberOfLines={3}>
+              {subTitle}
             </AppText>
-            {subTitle && (
-              <AppText style={styles.subTitle} numberOfLines={3}>
-                {subTitle}
-              </AppText>
-            )}
-          </View>
-          {showChevrons && (
-            <MaterialCommunityIcons
-              name="chevron-right"
-              size={20}
-              color={colors.medium}
-            />
           )}
         </View>
-      </TouchableHighlight>
-    </Swipeable>
+        {showChevrons && (
+          <MaterialCommunityIcons
+            name="chevron-right"
+            size={20}
+            color={colors.medium}
+          />
+        )}
+      </View>
+    </TouchableHighlight>
+    // </Swipeable>
   );
 };
 const styles = StyleSheet.create({

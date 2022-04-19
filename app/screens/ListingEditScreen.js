@@ -12,6 +12,8 @@ import {
 import FormImagePicker from "../components/forms/FormImagePicker";
 import Screen from "../components/Screen";
 import useLocation from "../hooks/useLocation";
+import listingsApi from "../api/listings";
+import UploadScreen from "./UploadScreen";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
@@ -47,9 +49,33 @@ const categories = [
 
 const ListingEditScreen = () => {
   const location = useLocation();
+  const [uploadVisible, setUploadVisible] = React.useState(false);
+  const [progress, setProgress] = React.useState(0);
+
+  //formikbag: resetForm
+  const handleSubmit = async (listing, { resetForm }) => {
+    //reset the progress
+    setProgress(0);
+    setUploadVisible(true);
+    const result = await listingsApi.addLinsting(
+      { ...listing, location },
+      (progress) => setProgress(progress)
+    );
+
+    if (!result.ok) {
+      setUploadVisible(false);
+      return alert("Couldnot save the listing");
+    }
+    resetForm();
+  };
 
   return (
     <Screen style={styles.container}>
+      <UploadScreen
+        onDone={() => setUploadVisible(false)}
+        progress={progress}
+        visible={uploadVisible}
+      />
       <AppForm
         initialValues={{
           title: "",
@@ -58,7 +84,7 @@ const ListingEditScreen = () => {
           description: "",
           images: [],
         }}
-        onSubmit={(value) => console.log(location)}
+        onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         <FormImagePicker name="images" />
